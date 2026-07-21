@@ -1,5 +1,7 @@
 using MarketPlace.DAL;
+using MarketPlace.DAL.Entities.Identity;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -15,6 +17,18 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddControllers();
+
+builder.Services.AddIdentity<AppUserEntity, AppRoleEntity>(opt =>
+{
+    opt.User.RequireUniqueEmail = false;
+    opt.Password.RequiredUniqueChars = 1;
+    opt.Password.RequireNonAlphanumeric = false;
+    opt.Password.RequireDigit = false;
+    opt.Password.RequireLowercase = false;
+    opt.Password.RequireUppercase = false;
+    opt.Password.RequiredLength = 6;
+}).AddEntityFrameworkStores<AppDbContext>()
+  .AddDefaultTokenProviders();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
