@@ -18,6 +18,7 @@ namespace MarketPlace.DAL
         public DbSet<ItemEntity> Items { get; set; }
         public DbSet<ReviewEntity> Reviews { get; set; }
         public DbSet<OrderEntity> Orders { get; set; }
+        public DbSet<ItemCategoryEntity> ItemCategories { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -31,7 +32,7 @@ namespace MarketPlace.DAL
                 e.Property(e => e.Description).HasColumnType("text");
                 e.Property(e => e.Price).HasDefaultValue(0);
                 e.Property(e => e.Quantity).HasDefaultValue(1);
-                e.Property(e => e.ListingExpiryDate).HasDefaultValue(DateTime.UtcNow.AddDays(20));
+                //e.Property(e => e.ListingExpiryDate).HasDefaultValue(DateTime.UtcNow.AddDays(20));
                 e.Property(e => e.IsUsed).HasDefaultValue(false);
                 e.Property(e => e.IsSoldOut).HasDefaultValue(false);
 
@@ -58,6 +59,15 @@ namespace MarketPlace.DAL
 
                 e.HasOne(e => e.Buyer).WithMany(b => b.BoughtOrders).HasForeignKey(e => e.BuyerId);
                 e.HasOne(e => e.Seller).WithMany(s => s.SoldOrders).HasForeignKey(e => e.SellerId);
+            });
+
+            modelBuilder.Entity<ItemCategoryEntity>(e =>
+            {
+                e.HasKey(e => e.Id);
+                e.Property(e => e.Name).IsRequired().HasMaxLength(150);
+                e.Property(e => e.Image).HasMaxLength(500);
+
+                e.HasMany(c => c.Items).WithOne(i => i.Category).HasForeignKey(i => i.CategoryId);
             });
 
 

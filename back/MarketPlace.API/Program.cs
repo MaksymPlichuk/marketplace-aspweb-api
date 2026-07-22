@@ -1,5 +1,7 @@
 using MarketPlace.DAL;
 using MarketPlace.DAL.Entities.Identity;
+using MarketPlace.DAL.Initializer;
+using MarketPlace.DAL.Repositories;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -35,8 +37,23 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     string? connectionString = builder.Configuration.GetConnectionString("LocalDB");
     options.UseNpgsql(connectionString);
 });
+
+string CORSPolicy = "AllowAll";
+
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy(CORSPolicy, cfg =>
+    {
+        cfg.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
+    });
+});
+
+builder.Services.AddScoped<ItemCategoryRepository>();
+builder.Services.AddScoped<ItemRepository>();
+
 var app = builder.Build();
 
+app.UseCors(CORSPolicy);
 
 if (app.Environment.IsDevelopment())
 {
@@ -49,4 +66,5 @@ app.UseHttpsRedirection();
 
 app.MapControllers();
 
+await app.SeedAsync();
 app.Run();

@@ -12,13 +12,12 @@ namespace MarketPlace.DAL.Entities.Identity
         public string Surname { get; set; } = string.Empty;
         public string? Address { get; set; } = string.Empty;
         public int? Age { get; set; }
-        public string? PhoneNumber { get; set; }
         public string? Image { get; set; }
 
         public List<OrderEntity> BoughtOrders { get; set; } = [];//як у покупця багато замовлень
         public List<OrderEntity> SoldOrders { get; set; } = [];//продані вісять у профілі
-        public List<ItemEntity> SellingItems { get; set; }//продані просто на фронті вивести де sold=true
-        public List<ReviewEntity> Reviews { get; set; }
+        public List<ItemEntity> SellingItems { get; set; } = [];//продані просто на фронті вивести де sold=true
+        public List<ReviewEntity> Reviews { get; set; } = [];
 
 
         //navigation props

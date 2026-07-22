@@ -14,7 +14,7 @@ namespace MarketPlace.DAL.Entities
         public string AuthorId { get; set; }
         public AppUserEntity Author { get; set; }
 
-        public string ItemId { get; set; }
+        public int ItemId { get; set; }
         public ItemEntity Item { get; set; }
     }
 }

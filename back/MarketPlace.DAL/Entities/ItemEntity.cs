@@ -22,5 +22,8 @@ namespace MarketPlace.DAL.Entities
         public List<ReviewEntity> Reviews { get; set; } = [];
         public string SellerId { get; set; }
         public AppUserEntity Seller { get; set; }
+
+        public int CategoryId { get; set; }
+        public ItemCategoryEntity Category{ get; set; }
     }
 }
