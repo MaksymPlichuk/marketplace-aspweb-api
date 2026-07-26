@@ -1,3 +1,6 @@
+using MarketPlace.API.Infrastracture;
+using MarketPlace.BLL.Mapperly;
+using MarketPlace.BLL.Services;
 using MarketPlace.DAL;
 using MarketPlace.DAL.Entities.Identity;
 using MarketPlace.DAL.Initializer;
@@ -5,6 +8,7 @@ using MarketPlace.DAL.Repositories;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateSlimBuilder(args);
@@ -51,9 +55,24 @@ builder.Services.AddCors(opt =>
 builder.Services.AddScoped<ItemCategoryRepository>();
 builder.Services.AddScoped<ItemRepository>();
 
+builder.Services.AddScoped<ItemService>();
+builder.Services.AddScoped<ImageService>();
+builder.Services.AddScoped<MapperProfile>();
+
 var app = builder.Build();
 
 app.UseCors(CORSPolicy);
+
+
+//string root = app.Environment.ContentRootPath;
+//string storage = Path.Combine(root, "images");
+
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(storage),
+//    RequestPath = "/images"
+//});
+app.UseStaticFile(builder.Environment);
 
 if (app.Environment.IsDevelopment())
 {

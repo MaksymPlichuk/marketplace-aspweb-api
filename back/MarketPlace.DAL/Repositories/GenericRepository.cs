@@ -25,7 +25,7 @@ namespace MarketPlace.DAL.Repositories
             return await _context.SaveChangesAsync() != 0;
         }
 
-        public IQueryable<TEntity> GetAllAsync()
+        public IQueryable<TEntity> GetAll()
         {
             return _context.Set<TEntity>().AsNoTracking();
         }
@@ -40,6 +40,15 @@ namespace MarketPlace.DAL.Repositories
             if (e != null)
             {
                 _context.Set<TEntity>().Remove(e);
+                return await _context.SaveChangesAsync() != 0;
+            }
+            return false;
+        }
+        public async Task<bool> UpdateAsync(TEntity entity)
+        {
+            var e = _context.Set<TEntity>().Update(entity);
+            if (e != null)
+            {
                 return await _context.SaveChangesAsync() != 0;
             }
             return false;

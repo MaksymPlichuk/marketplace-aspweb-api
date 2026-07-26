@@ -35,6 +35,7 @@ namespace MarketPlace.DAL
                 //e.Property(e => e.ListingExpiryDate).HasDefaultValue(DateTime.UtcNow.AddDays(20));
                 e.Property(e => e.IsUsed).HasDefaultValue(false);
                 e.Property(e => e.IsSoldOut).HasDefaultValue(false);
+                e.Property(e => e.Image).HasMaxLength(500);
 
 
                 e.HasMany(i => i.Orders).WithMany(o => o.Items).UsingEntity("ItemOrders");

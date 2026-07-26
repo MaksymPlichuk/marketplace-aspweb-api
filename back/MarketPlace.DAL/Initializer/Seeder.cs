@@ -138,6 +138,7 @@ namespace MarketPlace.DAL.Initializer
                     {
                         Name = "iPhone 13 Pro 256GB",
                         Description = "Стан як новий, батарея 92%, комплект повний.",
+                        //Image = "storage/"
                         Price = 24500m,
                         Quantity = 1,
                         IsUsed = true,

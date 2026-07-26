@@ -1,8 +1,9 @@
 <Solution>
   <Folder Name="/Solution Items/">
     <File Path="devlog.md" />
+    <File Path="errorlog.md" />
   </Folder>
+  <Project Path="MarketPlace.API/MarketPlace.API.csproj" />
   <Project Path="MarketPlace.BLL/MarketPlace.BLL.csproj" />
   <Project Path="MarketPlace.DAL/MarketPlace.DAL.csproj" />
-  <Project Path="MarketPlace.API/MarketPlace.API.csproj" />
 </Solution>

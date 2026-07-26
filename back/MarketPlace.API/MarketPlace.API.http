@@ -1,6 +1,6 @@
 @MarketPlace.API_HostAddress = http://localhost:5087
 
-GET {{MarketPlace.API_HostAddress}}/todos/
+GET {{MarketPlace.API_HostAddress}}/swagger/
 Accept: application/json
 
 ###

@@ -15,7 +15,7 @@ namespace MarketPlace.DAL.Repositories
         }
         public async Task<List<ItemEntity>> FindItemsByNameAsync(string name)
         {
-            var allItems = await base.GetAllAsync().ToListAsync();
+            var allItems = await base.GetAll().ToListAsync();
             foreach (var item in allItems)
             {
                 item.Name = item.Name.ToLower();
