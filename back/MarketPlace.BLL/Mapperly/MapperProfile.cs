@@ -22,14 +22,17 @@ namespace MarketPlace.BLL.Mapperly
         [MapperIgnoreSource(nameof(CreateItemDto.Image))]
         [MapperIgnoreTarget(nameof(ItemEntity.Image))]
         public partial ItemEntity CreateDtoToItemEntity(CreateItemDto dto);
-
-        //[MapperIgnoreSource(nameof(ItemEntity.Seller))]
-        //[MapperIgnoreTarget(nameof(ItemDto.Orders))]
-        //[MapperIgnoreTarget(nameof(ItemDto.Reviews))]
-        //[MapperIgnoreTarget(nameof(ItemDto.Category))]
         public partial List<ItemDto> ItemsToItemDtos(List<ItemEntity> item);
 
         public partial UserDto UserToUserDto(AppUserEntity appUser);
         public partial List<UserDto> UsersToUserDtos(List<AppUserEntity> appUser);
+
+        [MapperIgnoreSource(nameof(CreateItemDto.Image))]
+        [MapperIgnoreTarget(nameof(ItemEntity.Image))]
+        public partial void UpdateItem(UpdateItemDto dto, [MappingTarget]ItemEntity entity); //не створить новий
+
+
+        public partial ItemCategoryDto CatToDto(ItemCategoryEntity entity);
+        public partial List<ItemCategoryDto> CatListToListDto(List<ItemCategoryEntity> entity);
     }
 }

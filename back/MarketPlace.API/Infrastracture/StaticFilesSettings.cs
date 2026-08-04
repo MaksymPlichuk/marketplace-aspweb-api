@@ -6,5 +6,8 @@
         public static string ItemPath => "Items";
         public static string WebItemPath => "/images/items";
 
+        public static string CategoryPath => "Categories";
+        public static string WebCategoryPath => "/images/items";
+
     }
 }

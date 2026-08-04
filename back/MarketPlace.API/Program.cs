@@ -54,10 +54,14 @@ builder.Services.AddCors(opt =>
 
 builder.Services.AddScoped<ItemCategoryRepository>();
 builder.Services.AddScoped<ItemRepository>();
+builder.Services.AddScoped<AuthRepository>();
+builder.Services.AddScoped<ItemCategoryRepository>();
 
 builder.Services.AddScoped<ItemService>();
 builder.Services.AddScoped<ImageService>();
 builder.Services.AddScoped<MapperProfile>();
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<CategoryService>();
 
 var app = builder.Build();
 

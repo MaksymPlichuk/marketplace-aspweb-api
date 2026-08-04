@@ -15,22 +15,27 @@ namespace MarketPlace.DAL.Repositories
         }
         public async Task<List<ItemEntity>> FindItemsByNameAsync(string name)
         {
-            var allItems = await base.GetAll().ToListAsync();
-            foreach (var item in allItems)
-            {
-                item.Name = item.Name.ToLower();
-            }
+            var allItems = await base.GetAll()  //неоптимізовано
+                .Include(i=>i.Category).Include(i=>i.Reviews).ThenInclude(r=>r.Author)
+                .Include(i=>i.Seller)
+                .Include(i=>i.Orders).ThenInclude(o=>o.Seller)
+                .Include(i => i.Orders).ThenInclude(o => o.Buyer)
+                .ToListAsync();
+
+            //foreach (var item in allItems)
+            //{
+            //    item.Name = item.Name.ToLower();
+            //}
             string queryName = name.ToLower();
 
-            List<ItemEntity> res = allItems.Where(i => i.Name.Contains(queryName)).ToList();
+            //List<ItemEntity> res = allItems.Where(i => i.Name.Contains(queryName)).ToList();
 
-            if (res == null) { return null; }
-            return res;
+            //if (res == null) { return null; }
+            //return res;
 
-            //allItems.Select(i => i.Name == i.Name.ToLower());
-            //List<ItemEntity> items = await _context.Items.Where(i=>i.Name==name).ToListAsync();
-            //if (items == null) { return null; }
-            //return items;
+            List<ItemEntity> items = allItems.Where(i => i.Name.ToLower().Contains(queryName)).ToList();
+            if (items == null) { return null; }
+            return items;
         }
     }
 }

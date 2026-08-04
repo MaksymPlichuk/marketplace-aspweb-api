@@ -26,24 +26,39 @@ namespace MarketPlace.API.Controllers
             var res = _service.GetAllItems();
             return this.GetAction(res);
         }
-        [HttpGet("/id/")]
-        public async Task<IActionResult> GetItemById([FromRoute]int id)
+        [HttpGet("/id")]
+        public async Task<IActionResult> GetItemById([FromQuery]int id)
         {
             var res = await _service.GetItemByIdAsync(id);
+            return this.GetAction(res);
+        }
+        [HttpGet("/name")]
+        public async Task<IActionResult> GetByName([FromQuery]string name)
+        {
+            var res = await _service.GetItemsByNameAsync(name);
             return this.GetAction(res);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateItem([FromForm]CreateItemDto dto)
         {
-            var res = await _service.AddItemAsync(dto, _path);//перейменувати у Dto додати Id 
+            var res = await _service.CreateItemAsync(dto, _path);
             return this.GetAction(res);
         }
-        //[HttpPut]
-        //public IActionResult(UpdateItem([FromForm]UpdateItemDto dto)
-        //{
 
-        //}
+        [HttpPut]
+        public async Task<IActionResult> UpdateItem([FromForm] UpdateItemDto dto)
+        {
+            var res = await _service.UpdateItemAsync(dto, _path);
+            return this.GetAction(res);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteItem(int id)
+        {
+            var res = await _service.RemoveItemAsync(id, _path);
+            return this.GetAction(res);
+        }
 
     }
 }

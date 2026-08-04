@@ -14,3 +14,18 @@
 Зробив: Доробив Dto dependency
 Застряг на: видає null при перетворенні, коли додав UserForInfo dto, але він сам окремо добре підвантажується
 Наступного разу: Перевірити Include для всіх Dtos які мають UserForInfoDto
+
+## 2026-07-29 — 16:30: Services
+Зробив: Доробив CreateItemAsync
+Застряг на: видає null при створенні ItemDto: insert або update в таблиц? "Items" порушує обмеження зовн?шнього ключа "FK_Items_AspNetUsers_SellerId"
+Наступного разу: Перевірити типи данних зовнішніх ключів
+
+## 2026-08-04 — 18:30: RTK Query
+Зробив: Доробив RTK Get
+Застряг на: з'являється undefined при формуванні url для запитів http://localhost:5173/undefined/api/item/ при чому бек http://localhost:5087, тобто помилка при діставанні з env
+Наступного разу: Перевірити де знаходиться .env файл (не в src)
+
+## 2026-08-04 — 20:00: RTK Query
+Зробив: Доробив маппінг з GET
+Застряг на: items.map is not a function при виразі { items && items.payload.map( (i) => (<div key={i.Id}>123</div>) ) }
+Наступного разу: Проглянути яка відповідь приходить та вибрати саме частину з об'єктами (items.payload)

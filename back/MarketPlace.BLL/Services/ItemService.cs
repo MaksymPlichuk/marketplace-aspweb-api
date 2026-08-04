@@ -59,8 +59,23 @@ namespace MarketPlace.BLL.Services
             }
             return ServiceResponse.Failure($"Оголошення з id: {id} не існує!");
         }
+        private async Task<ItemEntity> GetItemWithDetailsByIdAsync(int id)
+        {
+            List<ItemEntity> items = _repository.GetAll().Include(i => i.Category)
+                .Include(i => i.Reviews).ThenInclude(r => r.Author)
+                .Include(i => i.Orders).ThenInclude(o => o.Seller)
+                .Include(i => i.Orders).ThenInclude(o => o.Buyer)
+                .Include(i => i.Seller).ToList();
 
-        public async Task<ServiceResponse> AddItemAsync(CreateItemDto dto, string storagePath)
+            var entity = items.Where(i => i.Id == id).FirstOrDefault();
+            if (entity != null)
+            {
+                return entity;
+            }
+            return null;
+        }
+
+        public async Task<ServiceResponse> CreateItemAsync(CreateItemDto dto, string storagePath)
         {
             ItemEntity entity = _mapper.CreateDtoToItemEntity(dto);
             if (dto.Image != null)
@@ -69,25 +84,79 @@ namespace MarketPlace.BLL.Services
                 if (!res.IsSuccess) { return res; }
 
                 entity.Image = res.Payload.ToString();
-                //todo save
+
+                try
+                {
+                    await _repository.CreateAsync(entity);
+                }
+                catch (Exception ex)
+                {
+                    _imageService.DeleteImage(Path.Combine(storagePath, entity.Image));
+                    return ServiceResponse.Failure(ex.Message);
+                }
                 return ServiceResponse.Success("Created", entity);
 
             }
             return ServiceResponse.Success("Created", entity);
 
         }
-        public ServiceResponse RemoveItem()
+        public async Task<ServiceResponse> UpdateItemAsync(UpdateItemDto dto, string filepath)
         {
-            return null;//todo
+            //var entity = await _repository.GetByIdAsync(dto.Id);
+            var entity = await GetItemWithDetailsByIdAsync(dto.Id);
+            if (entity == null)
+            {
+                return ServiceResponse.Failure($"Оголошення з id [{dto.Id}] не існує!");
+            }
+
+            string oldName = entity.Name;
+            _mapper.UpdateItem(dto, entity);
+
+            bool upRes;
+            if (dto.Image != null)
+            {
+                if (entity.Image != null) { _imageService.DeleteImage(Path.Combine(filepath, entity.Image)); }
+                var resp = await _imageService.CreateImageAsync(dto.Image, filepath);
+                if (!resp.IsSuccess) return resp;
+
+                entity.Image = resp.Payload.ToString();
+            }
+
+            upRes = await _repository.UpdateAsync(entity);
+
+            if (!upRes) return ServiceResponse.Failure("Невдалося зберегти");
+            return ServiceResponse.Success($"Оголошення {oldName} успішно оновлено!", _mapper.ItemToItemDto(entity));
         }
 
-        public async Task<ServiceResponse> GetItemsByName()
+
+        public async Task<ServiceResponse> RemoveItemAsync(int id, string filePath)
         {
-            return null;//подумати над Include як обійти
+            //var entity = await _repository.GetByIdAsync(id);
+            var entity = await GetItemWithDetailsByIdAsync(id);
+
+            if (entity == null)
+            {
+                return ServiceResponse.Failure($"Оголошення з id [{id}] не існує!");
+            }
+            if (entity.Image != null)
+            {
+                var resp = _imageService.DeleteImage(Path.Combine(filePath, entity.Image));
+                if (!resp.IsSuccess) return resp;
+            }
+            bool delResp = await _repository.DeleteAsync(id);
+            if (!delResp) return ServiceResponse.Failure("Невдалося Видалити");
+
+            return ServiceResponse.Success($"Оголошення [{entity.Name}] успішно видалено", _mapper.ItemToItemDto(entity));
         }
-        public async Task<ServiceResponse> UpdateItemAsync(ItemDto item)
+
+        public async Task<ServiceResponse> GetItemsByNameAsync(string name)
         {
-            return null;
+            var entities = await _repository.FindItemsByNameAsync(name);
+            if (entities == null) return ServiceResponse.Failure($"Незнайдено жодних збігів з {name}");
+
+            var dtos = _mapper.ItemsToItemDtos(entities);
+            return ServiceResponse.Success($"Знайдено {dtos.Count()} збігів з {name}", dtos);
+        
         }
 
     }
