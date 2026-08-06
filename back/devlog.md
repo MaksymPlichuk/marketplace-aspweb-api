@@ -52,3 +52,17 @@ app.Run();
 Створ Controller
 
 ```
+
+##Videos
+
+Для налаштування так як і для фото потрібно StaticFiles
+```csharp
+string VideosPath = Path.Combine(env.ContentRootPath, StaticFilesSettings.VideosPath);
+
+app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(VideosPath),
+                RequestPath = StaticFilesSettings.WebVideosPath, //StaticFilesSettings - наш клас де прописували змінні
+            });
+```
+і все в бразузері вводимо /Videos/vide_name.mp4 і готово

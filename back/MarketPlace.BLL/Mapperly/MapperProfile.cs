@@ -31,8 +31,15 @@ namespace MarketPlace.BLL.Mapperly
         [MapperIgnoreTarget(nameof(ItemEntity.Image))]
         public partial void UpdateItem(UpdateItemDto dto, [MappingTarget]ItemEntity entity); //не створить новий
 
-
         public partial ItemCategoryDto CatToDto(ItemCategoryEntity entity);
         public partial List<ItemCategoryDto> CatListToListDto(List<ItemCategoryEntity> entity);
+
+        [MapperIgnoreSource(nameof(CreateCategoryDto.Image))]
+        [MapperIgnoreTarget(nameof(ItemEntity.Image))]
+        public partial ItemCategoryEntity CreateCatToEntity(CreateCategoryDto dto);
+
+        [MapperIgnoreSource(nameof(UpdateCategoryDto.Image))]
+        [MapperIgnoreTarget(nameof(ItemEntity.Image))]
+        public partial void UpdateCatToEntity(UpdateCategoryDto dto, [MappingTarget]ItemCategoryEntity entity);
     }
 }

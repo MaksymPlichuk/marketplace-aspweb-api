@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.FileProviders;
+﻿using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.FileProviders;
 using System.Runtime.CompilerServices;
 
 namespace MarketPlace.API.Infrastracture
@@ -9,7 +10,9 @@ namespace MarketPlace.API.Infrastracture
         {
             var items = new List<KeyValuePair<string, string>> {
                 new KeyValuePair<string, string>(StaticFilesSettings.ItemPath,StaticFilesSettings.WebItemPath),
-                //new KeyValuePair<string, string>("dssd","dsdsds"),
+                new KeyValuePair<string, string>(StaticFilesSettings.CategoryPath,StaticFilesSettings.WebCategoryPath),
+
+                //new KeyValuePair<string, string>()
             };
 
             string storagePath = Path.Combine(env.ContentRootPath, StaticFilesSettings.StoragePath);
@@ -27,6 +30,15 @@ namespace MarketPlace.API.Infrastracture
                     RequestPath = item.Value,
                 });
             }
+
+            string videosStoragePath = Path.Combine(env.ContentRootPath, StaticFilesSettings.VideosStoragePath);
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(videosStoragePath),
+                RequestPath = StaticFilesSettings.WebVideosPath,
+            });
+
+
             return app;
         }
     }

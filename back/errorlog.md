@@ -29,3 +29,15 @@
 Зробив: Доробив маппінг з GET
 Застряг на: items.map is not a function при виразі { items && items.payload.map( (i) => (<div key={i.Id}>123</div>) ) }
 Наступного разу: Проглянути яка відповідь приходить та вибрати саме частину з об'єктами (items.payload)
+
+## 2026-08-06 — 12:30: Media Change
+Зробив: Доробив category Crud додав папку _**Meida**_ у якій Images Videos,змінив запис Image у БД на images/d6159cb7-3643-4f2f-b802-e47163f7dbbb.png замість d6159cb7-3643-4f2f-b802-e47163f7dbbb.png
+Застряг на: при такій зміні ломається видалення і дублюються типи фото
+            //[0] - C:\Users\Admin\source\repos\MarketPlace_ASPWEBAPI\back\MarketPlace.API\Media
+            //[1] - Images\Categories\categories
+            //[2] - 2fc7f179 - 4b70 - 4518 - 937c - 64428052d9d8.webp
+
+Наступного разу: Рішення розбити у Controller _fullPath на basePath subPath
+            _basePath = Path.Combine(env.ContentRootPath, StaticFilesSettings.StoragePath);
+            _subPath = StaticFilesSettings.CategoryPath;
+і передавати у Update.. Create ці 2 параметри та змінити логіку у ImageService, бо Split("\\") зламається при Deploy

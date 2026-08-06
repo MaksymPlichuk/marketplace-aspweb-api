@@ -1,5 +1,6 @@
 import {useGetItemsQuery} from "../services/itemsApi.ts";
 import {useEffect} from "react";
+import type {IItemItem} from "../types/IItemItem.ts";
 
 const MainPage = () => {
 
@@ -16,15 +17,16 @@ const MainPage = () => {
         <div className={"flex justify-center mt-5  h-full flex-col justify-self-center text-center"}>
             <h1 className={"justify-self-center p-5 rounded-b-3xl bg-gray-200"}>Welcome to the shop! Choose
                 category</h1>
-            <div className="flex justify-center p-5 rounded-b-3xl h-full">
+            <div className="grid justify-center p-5 rounded-b-3xl h-full grid-cols-4 gap-5">
                 {isLoading ? (<div>Loading...</div>) :
                     isError ? (<div>Error</div>) :
                         (
                             items &&
                             items.payload.map((i) => (
-                                <div className="max-w-sm rounded overflow-hidden shadow-lg m-5" key={i.id}>//todo grid
+                                <div className="max-w-sm rounded overflow-hidden shadow-lg m-5" key={i.id}>
                                     <img className="w-full"
-                                         src={i.image ? i.image : "https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg"}
+                                         src={i.image ? `http://localhost:5087/images/items/${i.image}`//fix
+                                             : "https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg"}
                                          alt={i.name}/>
                                     <div className="px-6 py-4">
                                         <div className="font-bold text-xl mb-2">{i.name}</div>

@@ -13,11 +13,13 @@ namespace MarketPlace.API.Controllers
     public class ItemController : ControllerBase
     {
         private ItemService _service;
-        private string _path;
+        private string _basePath;
+        private string _subPath;
         public ItemController(ItemService service, IWebHostEnvironment env)
         {
             _service = service;
-            _path = Path.Combine(env.ContentRootPath, StaticFilesSettings.StoragePath, StaticFilesSettings.ItemPath);
+            _basePath = Path.Combine(env.ContentRootPath, StaticFilesSettings.StoragePath);
+            _subPath = StaticFilesSettings.ItemPath;
         }
 
         [HttpGet]
@@ -42,21 +44,21 @@ namespace MarketPlace.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateItem([FromForm]CreateItemDto dto)
         {
-            var res = await _service.CreateItemAsync(dto, _path);
+            var res = await _service.CreateItemAsync(dto, _basePath, _subPath);
             return this.GetAction(res);
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateItem([FromForm] UpdateItemDto dto)
         {
-            var res = await _service.UpdateItemAsync(dto, _path);
+            var res = await _service.UpdateItemAsync(dto, _basePath, _subPath);
             return this.GetAction(res);
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteItem(int id)
         {
-            var res = await _service.RemoveItemAsync(id, _path);
+            var res = await _service.RemoveItemAsync(id, _basePath);
             return this.GetAction(res);
         }
 

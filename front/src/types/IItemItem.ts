@@ -1,22 +1,24 @@
-export interface IItemItem {
-    Id: string,
-    CreationDate: string,
-    Name: string,
-    Description: string | null,
-    Image: string,
+import type {IUserForInfoItem} from "./AdditionalItems/IUserForInfoItem.ts";
+import type {IOrderForItemItem} from "./AdditionalItems/IOrderForItemItem.ts";
+import type {ICategoryForInfoItem} from "./AdditionalItems/ICategoryForItemOrderItem.ts";
+import type {IReviewForItemItem} from "./AdditionalItems/IReviewForItemItem.ts";
 
-    Price: string,
-    Quantity: string,
-    IsUsed: boolean,
-    IsSoldOut: boolean,
+export interface IItemItem {
+    id: string,
+    creationDate: string,
+    name: string,
+    description: string | null,
+    image: string,
+    listingExpiryDate: string,
+
+    price: string,
+    quantity: string,
+    isUsed: boolean,
+    isSoldOut: boolean,
+
+    seller: IUserForInfoItem,
+    orders: IOrderForItemItem[],
+    reviews: IReviewForItemItem[],
+    category: ICategoryForInfoItem,
+
 }
-// public DateTime CreationDate { get; set; }
-//
-// public DateTime ListingExpiryDate { get; set; } = DateTime.UtcNow.AddDays(30);
-//
-// public List<OrderForItemDto> Orders { get; set; } = [];
-//
-// public List<ReviewForItemDto> Reviews { get; set; } = [];
-// public CategoryForItemOrderDto Category { get; set; }
-//
-// public UserForInfoDto Seller { get; set; }
